@@ -5,6 +5,7 @@ const User = require('../../models');
 // /api/users
 router.get('/', (req, res) => { // get all users 
     User.find({})
+        .populate('reports')
         .then(userData => res.json(userData))
         .catch(err => {
             console.log(err);
@@ -21,6 +22,6 @@ router.post('/', (req, res) => {
         .catch(err => {
             console.log(err)
         })
-}); 
+});
 
 module.exports = router;
