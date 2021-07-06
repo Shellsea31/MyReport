@@ -1,7 +1,6 @@
 const router = require('express').Router();
 const User = require('../../models');
 
-
 // /api/users
 router.get('/', (req, res) => { // get all users 
     User.find({})
@@ -37,7 +36,7 @@ router.get('/:userId', ({ params }, res) => { // find one user by ID
     
 }); 
 
-router.delete('/:userId', ({ params }, res) => {
+router.delete('/:userId', ({ params }, res) => { // find user and delete
     User.findOneAndDelete({ _id: params.userId })
     .then(userData => {
         if (!userData) {
