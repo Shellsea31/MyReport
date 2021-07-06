@@ -13,7 +13,7 @@ router.get('/', (req, res) => { // get all users
 });
 
 // /api/users
-router.post('/', (req, res) => {
+router.post('/', (req, res) => { // create new user
     User.create({
         name: req.body.name
     })
@@ -24,7 +24,7 @@ router.post('/', (req, res) => {
 });
 
 // /api/users/userId
-router.get('/:userId', ({ params }, res) => {
+router.get('/:userId', ({ params }, res) => { // find one user by ID
     User.findOne({ _id: params.userId })
     .then(userData => {
         if (!userData) {
@@ -35,6 +35,18 @@ router.get('/:userId', ({ params }, res) => {
     })
     .catch(err => res.json(err)); 
     
+}); 
+
+router.delete('/:userId', ({ params }, res) => {
+    User.findOneAndDelete({ _id: params.userId })
+    .then(userData => {
+        if (!userData) {
+            res.status(404).json({ message: "no user found with this id" }); 
+            return; 
+        }
+        res.json(userData)
+    })
+    .catch(err => res.json(err))
 })
 
 
