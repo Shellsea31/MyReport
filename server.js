@@ -22,4 +22,4 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/my-report', {
 mongoose.set('debug', true);
 console.log(PORT)
 
-app.listen(PORT, () => console.log(`🥳 On localhost:${PORT}`));
+app.listen(PORT, () => console.log(`🥳 On http://localhost:${PORT}`));
