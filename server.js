@@ -20,5 +20,6 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost/my-report', {
 
 // log mongoose queries
 mongoose.set('debug', true);
+console.log(PORT)
 
 app.listen(PORT, () => console.log(`🥳 On http://localhost:${PORT}`));
