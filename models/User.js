@@ -50,7 +50,8 @@ const UserSchema = new Schema({
     name: {
         type: String,
         required: true,
-        trim: true
+        trim: true, 
+        unique: true
     },
     reports: [ReportSchema]
 },
