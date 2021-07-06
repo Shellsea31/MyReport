@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const User = require('../../models'); 
 
+// /api/reports/userId
 router.post('/:userId', ({ body, params }, res) => {
     User.findOneAndUpdate(
         { _id: params.userId }, 
