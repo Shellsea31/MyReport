@@ -1,7 +1,18 @@
 const router = require('express').Router();
 const User = require('../../models');
 
-
+router.get('/:userId/:reportId', ({ params }, res) => { // get a single report
+    User.findOne({ _id: params.userId })
+        .select({ reports: { $elemMatch: { _id: params.reportId } } })
+        .then(userData => {
+            if (!userData) {
+                res.status(404).json({ message: "please make sure a user with this id exists or double check the report id" });
+                return;
+            }
+            res.json(userData)
+        })
+        .catch(err => res.json(err))
+});
 
 // /api/reports/userId
 router.post('/:userId', ({ body, params }, res) => { // make a report
