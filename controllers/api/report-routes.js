@@ -1,6 +1,7 @@
 const router = require('express').Router();
 const User = require('../../models');
 
+// api/reports/userId/reportId
 router.get('/:userId/:reportId', ({ params }, res) => { // get a single report
     User.findOne({ _id: params.userId })
         .select({ reports: { $elemMatch: { _id: params.reportId } } })
@@ -32,10 +33,29 @@ router.post('/:userId', ({ body, params }, res) => { // make a report
 });
 
 // api/reports/userId/reportId
+router.put('/:userId/:reportId', ({ params, body }, res) => { // edit/update a single report
+    User.findOneAndUpdate(
+        { "_id": params.userId, "reports.reportId": params.reportId },
+        { $set: { "reports.$": body } },
+        { new: true }
+    )
+        .then(userData => {
+            if (!userData) {
+                res.status(404).json({ message: "make sure user and report exists!" });
+                return;
+            }
+            res.json(userData);
+        })
+        .catch(err => res.json(err))
+})
+
+
+
+// api/reports/userId/reportId
 router.delete('/:userId/:reportId', ({ params }, res) => { // delete report 
     User.findOneAndUpdate(
         { _id: params.userId },
-        { $pull: { reports: { _id: params.reportId } } },
+        { $pull: { reports: { reportId: params.reportId } } },
         { new: true }
     )
         .then(userData => {
