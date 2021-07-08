@@ -4,7 +4,10 @@ const User = require('../../models');
 // api/reports/userId/reportId
 router.get('/:userId/:reportId', ({ params }, res) => { // get a single report
     User.findOne({ _id: params.userId })
-        .select({ reports: { $elemMatch: { _id: params.reportId } } })
+        .select(
+            { reports: { $elemMatch: { _id: params.reportId } } }, 
+            { body }
+            )
         .then(userData => {
             if (!userData) {
                 res.status(404).json({ message: "please make sure a user with this id exists or double check the report id" });
@@ -14,6 +17,20 @@ router.get('/:userId/:reportId', ({ params }, res) => { // get a single report
         })
         .catch(err => res.json(err))
 });
+
+// api/reports/month
+router.get('/:month', ({ params }, res) => { // find reports by month
+    User.find({"reports.month": params.month})
+    .select({ reports: { $elemMatch: { month: params.month } } })
+    .then(userData => {
+        if (!userData) {
+            res.status(404).json({ message: "please make sure this user exists"}); 
+            return;
+        }
+        res.json(userData)
+    })
+    .catch(err => res.json(err)); 
+})
 
 // /api/reports/userId
 router.post('/:userId', ({ body, params }, res) => { // make a report
