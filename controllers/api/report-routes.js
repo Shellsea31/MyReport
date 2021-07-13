@@ -15,6 +15,21 @@ router.get('/:userId/:reportId', ({ params }, res) => { // get a single report
         .catch(err => res.json(err))
 });
 
+// api/reports/month
+router.get('/:month', (req, res) => { // find reports by month
+    User.find({"reports.month": req.params.month})
+    .select('name') // include name in response
+    .select({ reports: { $elemMatch: { month: req.params.month } } }) // include report in reponse
+    .then(userData => {
+        if (!userData) {
+            res.status(404).json({ message: "please make sure this user exists"}); 
+            return;
+        }
+        res.json(userData)
+    })
+    .catch(err => res.json(err)); 
+})
+
 // /api/reports/userId
 router.post('/:userId', ({ body, params }, res) => { // make a report
     User.findOneAndUpdate(
